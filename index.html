@@ -1,9 +1,33 @@
 <html>
 	<head>
 		<title>Push notifs FTW</title>
+		<script type="text/javascript" >
+			var isPushEnabled = false;
+
+			window.addEventListener('load', function() {
+			  var pushButton = document.querySelector('.js-push-button');
+			  pushButton.addEventListener('click', function() {
+			    if (isPushEnabled) {
+			      unsubscribe();
+			    } else {
+			      subscribe();
+			    }
+			  });
+
+			  // Check that service workers are supported, if so, progressively
+			  // enhance and add push messaging support, otherwise continue without it.
+			  if ('serviceWorker' in navigator) {
+			    navigator.serviceWorker.register('/service-worker.js')
+			    .then(initialiseState);
+			  } else {
+			    console.warn('Service workers aren\'t supported in this browser.');
+			  }
+			});
+		</script>
 	</head>
 	<body>
 		<div>Blah blah ginger</div>
+		<div><input type="button" class="js-push-button"></div>
 	</body>
 </html>
 
